@@ -25,7 +25,7 @@
                 var b = data[i+2];
 
                 // attempt to turn currently played left hand white keys into red
-                if (Math.abs(r - 110) <= 10 && Math.abs(g - 160) <= 10 && Math.abs(b - 202) <= 10) {
+                if (Math.abs(r - 110) <= 20 && Math.abs(g - 160) <= 20 && Math.abs(b - 202) <= 20) {
                     data[i] = 255;
                     data[i+1] = 0;
                     data[i+2] = 0;
