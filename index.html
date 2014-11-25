@@ -7,6 +7,7 @@
     // right hand white key: (138, 227, 51)
     // right hand black key: (83, 156, 15)
     // keyboard is bottom 20% of video
+    var test = true;
 
     function draw(v,c,bc,w,h) {
         if(v.paused || v.ended) return false;
@@ -18,6 +19,14 @@
             // Grab the pixel data from the backing canvas
             var idata = bc.getImageData(0,Math.floor(h*0.8),w,h);
             var data = idata.data;
+
+            var expectedPixels = Math.floor(w * h / 5.0);
+            var actualPixels = data.length;
+            if (test) {
+                console.log(expectedPixels);
+                console.log(actualPixels);
+                test = false;
+            }
 
             // Loop through the pixels, turning them grayscale
             for(var i = 0; i < data.length; i+=4) {
