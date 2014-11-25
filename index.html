@@ -6,6 +6,7 @@
     // left hand black key: (50, 98, 155)
     // right hand white key: (138, 227, 51)
     // right hand black key: (83, 156, 15)
+    // keyboard is bottom 20% of video
 
     function draw(v,c,bc,w,h) {
         if(v.paused || v.ended) return false;
@@ -15,7 +16,7 @@
             // First, draw it into the backing canvas
             bc.drawImage(v,0,0,w,h);
             // Grab the pixel data from the backing canvas
-            var idata = bc.getImageData(0,0,w,h);
+            var idata = bc.getImageData(0,Math.floor(h*0.8),w,h);
             var data = idata.data;
 
             // Loop through the pixels, turning them grayscale
