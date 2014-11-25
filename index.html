@@ -26,7 +26,6 @@
             if (test) {
                 console.log(expectedPixels);
                 console.log(actualPixels);
-                console.log("Test");
                 test = false;
             }
 
@@ -38,6 +37,10 @@
 
                 // attempt to turn currently played left hand white keys into red
                 if (Math.abs(r - 110) <= 20 && Math.abs(g - 160) <= 20 && Math.abs(b - 202) <= 20) {
+                    var x = (i / 4) % w;
+                    var y = Math.floor((i / 4.0) / w);
+                    console.log(x);
+
                     data[i] = 255;
                     data[i+1] = 0;
                     data[i+2] = 0;
