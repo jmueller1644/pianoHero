@@ -2,7 +2,8 @@
 <title>Video/Canvas Demo 1</title>
 <script>
     function draw(v,c,bc,w,h) {
-        if(v.paused || v.ended) return false;
+        // don't check pixels during introduction
+        if(v.paused || v.ended || v.currentTime < 13) return false;
 
         // First, draw it into the backing canvas
         bc.drawImage(v,0,0,w,h);
