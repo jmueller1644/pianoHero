@@ -5,7 +5,7 @@
         if(v.paused || v.ended) return false;
 
         // don't check pixels during introduction
-        if (v.currentTime >= 13) {}
+        if (v.currentTime >= 13) {
             // First, draw it into the backing canvas
             bc.drawImage(v,0,0,w,h);
             // Grab the pixel data from the backing canvas
