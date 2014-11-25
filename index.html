@@ -21,7 +21,7 @@
             var idata = bc.getImageData(0,Math.floor(h*0.8),w,h);
             var data = idata.data;
 
-            var expectedPixels = Math.floor(w * h / 5.0);
+            var expectedPixels = Math.floor(w * h);
             var actualPixels = data.length;
             if (test) {
                 console.log(expectedPixels);
