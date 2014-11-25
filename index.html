@@ -3,7 +3,7 @@
 <script>
     function draw(v,c,bc,w,h) {
         if(v.paused || v.ended) return false;
-        console.log(v.currentTime);
+
         // First, draw it into the backing canvas
         bc.drawImage(v,0,0,w,h);
         // Grab the pixel data from the backing canvas
@@ -35,6 +35,7 @@
         var backcontext = back.getContext('2d');
 
         var cw,ch;
+        v.currentTime = 13;
 
         v.addEventListener('play', function() {
             cw = v.clientWidth;
