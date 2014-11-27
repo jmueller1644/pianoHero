@@ -7,77 +7,132 @@
 <html>
 	<body>
 
-		<canvas id = "myCanvas" width = "1700" height = "2200"
-			style = "border:1px solid #000000;">
-		</canvas>
+		<div style="position: relative, border:1px solid #000000;">
+			<canvas id="layer1" width="1700" height="2200" 
+		 		style="position: absolute; left: 0; top: 0; z-index: 1;">
+		 	</canvas>
+		 	<canvas id="layer2" width="1700" height="2200" 
+		   		style="position: absolute; left: 0; top: 0; z-index: 0;">
+		   	</canvas>
+		</div>
 
 		<script>
-			var c = document.getElementById("myCanvas");
+			var c = document.getElementById("layer1");
 			var ctx = c.getContext("2d");
+			createPage();
 
-			var img1 = new Image();
-			img1.src = "TrebleClef.png";
-			var img2 = new Image();
-			img2.src = "BassClef.png";
-			var img3 = new Image();
-			img3.src = "Brace.png";
+			var cn = document.getElementById("layer2");
+			var ctxn = cn.getContext("2d");
 
-			img1.onload = function () {
-			    for(var j = 75; j < 2100; j += 428){
-				    ctx.drawImage(img1,104,j,44,105);
-				}
+			//Draw arbitrary notes
+			drawQuarterNote(ctxn,200,145,17,13);
+			drawQuarterNote(ctxn,300,152,17,13);
+			drawQuarterNote(ctxn,-200,145,17,13);
+
+			//Make sure not is being drawn at the correct point
+			//ctxn.fillStyle = 'white';
+			//ctxn.fillRect(200,145,1,1);
+			//ctxn.fillRect(300,152,1,1);
+
+			function drawQuarterNote(ctx, x, y, w, h) {
+				x -= w/2.0, y -= h/2.0;
+				var kappa = .5522848;
+				ctx.save();
+				ctx.translate(x-w/10,y+3*h/7);
+				ctx.rotate(-1 * Math.PI / 6);
+				var x1 = x, x = 0;
+				var y1 = y, y = 0;
+
+			    ox = (w / 2) * kappa, // control point offset horizontal
+			    oy = (h / 2) * kappa, // control point offset vertical
+			    xe = x + w,           // x-end
+			    ye = y + h,           // y-end
+			    xm = x + w / 2,       // x-middle
+			    ym = y + h / 2;       // y-middle
+
+				ctx.beginPath();
+				ctx.moveTo(x,ym);
+				ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+				ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+				ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+				ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+				ctx.fill();
+				ctx.restore();
+
+				ctx.moveTo(x1+w,y1+h/2);
+				ctx.lineTo(x1+w,y1+h/2-45);
+				ctx.stroke();
+				ctx.moveTo(x1+w-1,y1+h/2);
+				ctx.lineTo(x1+w-1,y1+h/2-45);
+				ctx.stroke();
 			}
 
-			img3.onload = function () {
-			    for(var l = 95; l < 2100; l += 428){
-				    ctx.drawImage(img3,78,l,21,179);
-				}
-			}
-			
-			img2.onload = function () {
-			    for(var k = 217; k < 2200; k += 428){
-				    ctx.drawImage(img2,106,k,34,40);
-				}
-			    
-				var x1 = 100;
-				var x2 = 1600;
-				var skip = false;
+			function createPage(){
+				var img1 = new Image();
+				img1.src = "TrebleClef.png";
+				var img2 = new Image();
+				img2.src = "BassClef.png";
+				var img3 = new Image();
+				img3.src = "Brace.png";
 
-				//DRAW LINES
-				for(var y = 100; y < 2099; y += 52){
-					for(var i = 1; i < 6; i++){
-						ctx.moveTo(x1, y);
-						ctx.lineTo(x2, y);
-						ctx.stroke();
-						y += 13;
+				//Place Images
+				img1.onload = function () {
+				    for(var j = 75; j < 2100; j += 428){
+					    ctx.drawImage(img1,104,j,44,105);
 					}
-					if(skip){
-						ctx.moveTo(x1, y - 13);
-						ctx.lineTo(x1, y - 182);
-						ctx.stroke();
-						ctx.moveTo(x1 + 1, y - 13);
-						ctx.lineTo(x1 + 1, y - 182);
-						ctx.stroke();
-						ctx.moveTo(x2, y - 13);
-						ctx.lineTo(x2, y - 182);
-						ctx.stroke();
-						ctx.moveTo(x2 - 1, y - 13);
-						ctx.lineTo(x2 - 1, y - 182);
-						ctx.stroke();
-						ctx.moveTo(x2 - 2, y - 13);
-						ctx.lineTo(x2 - 2, y - 182);
-						ctx.stroke();
-						y += 194;
-						skip = false;
-					} else {
-						skip = true;
+				}
+
+				img3.onload = function () {
+				    for(var l = 95; l < 2100; l += 428){
+					    ctx.drawImage(img3,78,l,21,179);
 					}
 				}
-			}
+				
+				img2.onload = function () {
+				    for(var k = 217; k < 2200; k += 428){
+					    ctx.drawImage(img2,106,k,34,40);
+					}
+				    
+					var x1 = 100;
+					var x2 = 1600;
+					var skip = false;
 
-			//DRAW THE TITLE
-			//ctx.font = "40pt times new roman";
-			//ctx.fillText(title,425,50);
+					//Draw lines
+					for(var y = 100; y < 2099; y += 52){
+						for(var i = 1; i < 6; i++){
+							ctx.moveTo(x1, y);
+							ctx.lineTo(x2, y);
+							ctx.stroke();
+							y += 13;
+						}
+						if(skip){
+							ctx.moveTo(x1, y - 13);
+							ctx.lineTo(x1, y - 182);
+							ctx.stroke();
+							ctx.moveTo(x1 + 1, y - 13);
+							ctx.lineTo(x1 + 1, y - 182);
+							ctx.stroke();
+							ctx.moveTo(x2, y - 13);
+							ctx.lineTo(x2, y - 182);
+							ctx.stroke();
+							ctx.moveTo(x2 - 1, y - 13);
+							ctx.lineTo(x2 - 1, y - 182);
+							ctx.stroke();
+							ctx.moveTo(x2 - 2, y - 13);
+							ctx.lineTo(x2 - 2, y - 182);
+							ctx.stroke();
+							y += 194;
+							skip = false;
+						} else {
+							skip = true;
+						}
+					}
+				}
+
+				//DRAW THE TITLE
+				//ctx.font = "40pt times new roman";
+				//ctx.fillText(title,425,50);
+			}
 		</script>
 	</body>
 </html>
