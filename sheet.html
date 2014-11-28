@@ -25,16 +25,69 @@
 			var ctxn = cn.getContext("2d");
 
 			//Draw arbitrary notes
-			drawQuarterNote(ctxn,200,145,17,13);
-			drawQuarterNote(ctxn,300,152,17,13);
-			drawQuarterNote(ctxn,-200,145,17,13);
+			drawQuarterNote(ctxn,200,145);
+			drawQuarterNote(ctxn,300,152);
+			drawHalfNote(ctxn,400,139);
+			drawHalfNote(ctxn,500,132);
+			drawQuarterNote(ctxn,-200,145);
 
-			//Make sure not is being drawn at the correct point
-			//ctxn.fillStyle = 'white';
-			//ctxn.fillRect(200,145,1,1);
-			//ctxn.fillRect(300,152,1,1);
+			function drawHalfNote(ctx, x, y) {
+				var w = 17;
+				var h = 13;
+				x -= w/2.0, y -= h/2.0;
+				var kappa = .5522848;
+				ctx.save();
+				ctx.translate(x-w/10,y+3*h/7);
+				ctx.rotate(-1 * Math.PI / 6);
+				var x1 = x, x = 0;
+				var y1 = y, y = 0;
 
-			function drawQuarterNote(ctx, x, y, w, h) {
+			    ox = (w / 2) * kappa, // control point offset horizontal
+			    oy = (h / 2) * kappa, // control point offset vertical
+			    xe = x + w,           // x-end
+			    ye = y + h,           // y-end
+			    xm = x + w / 2,       // x-middle
+			    ym = y + h / 2;       // y-middle
+
+				ctx.beginPath();
+				ctx.moveTo(x,ym);
+				ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+				ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+				ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+				ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+				ctx.fill();
+
+				w = 16, h = 7;
+				ox = (w / 2) * kappa, // control point offset horizontal
+			    oy = (h / 2) * kappa, // control point offset vertical
+			    xe = x + w,           // x-end
+			    ye = y + h,           // y-end
+			    xm = x + w / 2,       // x-middle
+			    ym = y + h / 2;       // y-middle
+
+				ctx.beginPath();
+				ctx.moveTo(x+1,ym+3);
+				ctx.bezierCurveTo(x + 1, ym - oy+3, xm - ox+1, y+3, xm+1, y+3);
+				ctx.bezierCurveTo(xm + ox+1, y+3, xe+1, ym - oy+3, xe+1, ym+3);
+				ctx.bezierCurveTo(xe+1, ym + oy+3, xm + ox+1, ye+3, xm+1, ye+3);
+				ctx.bezierCurveTo(xm - ox+1, ye+3, x+1, ym + oy+3, x+1, ym+3);
+				ctx.fillStyle = 'white';
+				ctx.fill();
+				ctx.restore();
+
+				w = 17, h = 13;
+				ctx.fillStyle = 'black';
+				ctx.moveTo(x1+w,y1+h/2);
+				ctx.lineTo(x1+w,y1+h/2-45);
+				ctx.stroke();
+				ctx.moveTo(x1+w-1,y1+h/2);
+				ctx.lineTo(x1+w-1,y1+h/2-45);
+				ctx.stroke();
+			}
+
+			function drawQuarterNote(ctx, x, y) {
+				var w = 17;
+				var h = 13;
 				x -= w/2.0, y -= h/2.0;
 				var kappa = .5522848;
 				ctx.save();
