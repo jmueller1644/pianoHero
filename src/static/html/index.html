@@ -37,9 +37,9 @@
         // don't check pixels during introduction and half-speed run
         if (v.currentTime >= 13  && v.currentTime <= 106) {
             // First, draw it into the backing canvas
-            bc.drawImage(v,0,0,w,h);
+            bc.drawImage(v, 0, 0, w, h);
             // Grab the pixel data from the backing canvas
-            var idata = bc.getImageData(0,Math.floor(h*0.8) + KEY_OFFSET, w, 1);
+            var idata = bc.getImageData(0, Math.floor(h * 0.8) + KEY_OFFSET, w, 1);
             var data = idata.data;
 
             var expectedPixels = Math.floor(w * h);
@@ -51,7 +51,7 @@
             }
 
             // Loop through the pixels, turning them grayscale
-            for(var i = 0; i < data.length; i+=4) {
+            for(var i = 0; i < data.length; i += 4) {
                 var r = data[i];
                 var g = data[i+1];
                 var b = data[i+2];
@@ -63,13 +63,9 @@
                     console.log(x);
 
                     data[i] = 255;
-                    data[i+1] = 0;
-                    data[i+2] = 0;
+                    data[i + 1] = 0;
+                    data[i + 2] = 0;
                 }
-                //var brightness = (3*r+4*g+b)>>>3;
-                //data[i] = brightness;
-                //data[i+1] = brightness;
-                //data[i+2] = brightness;
             }
             idata.data = data;
             // Draw the pixels onto the visible canvas
