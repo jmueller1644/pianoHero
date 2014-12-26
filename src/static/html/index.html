@@ -39,7 +39,7 @@
             // First, draw it into the backing canvas
             bc.drawImage(v,0,0,w,h);
             // Grab the pixel data from the backing canvas
-            var idata = bc.getImageData(0,Math.floor(h*0.8) + KEY_OFFSET, w, Math.floor(h*0.8) + KEY_OFFSET + 1);
+            var idata = bc.getImageData(0,Math.floor(h*0.8) + KEY_OFFSET, w, 1);
             var data = idata.data;
 
             var expectedPixels = Math.floor(w * h);
