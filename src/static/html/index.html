@@ -8,6 +8,7 @@
     // right hand black key: (83, 156, 15)
     // keyboard is bottom 20% of video
     var test = true;
+    var KEY_OFFSET = 10; // pixels from top of keys
 
     function draw(v,c,bc,w,h) {
         if(v.paused || v.ended) return false;
@@ -17,8 +18,7 @@
             // First, draw it into the backing canvas
             bc.drawImage(v,0,0,w,h);
             // Grab the pixel data from the backing canvas
-            console.log(Math.floor(h*0.8));
-            var idata = bc.getImageData(0,Math.floor(h*0.8),w,h);
+            var idata = bc.getImageData(0,Math.floor(h*0.8) + KEY_OFFSET, w, Math.floor(h*0.8) + KEY_OFFSET + 1);
             var data = idata.data;
 
             var expectedPixels = Math.floor(w * h);
