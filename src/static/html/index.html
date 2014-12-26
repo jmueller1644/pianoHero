@@ -10,6 +10,27 @@
     var test = true;
     var KEY_OFFSET = 10; // pixels from top of keys
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var v = document.getElementById('v');
+        var canvas = document.getElementById('c');
+        var context = canvas.getContext('2d');
+        var back = document.createElement('canvas');
+        var backcontext = back.getContext('2d');
+
+        var cw,ch;
+        v.currentTime = 13;
+
+        v.addEventListener('play', function() {
+            cw = v.clientWidth;
+            ch = v.clientHeight;
+            canvas.width = cw;
+            canvas.height = ch;
+            back.width = cw;
+            back.height = ch;
+            draw(v,context,backcontext,cw,ch);
+        }, false);
+    });
+
     function draw(v,c,bc,w,h) {
         if(v.paused || v.ended) return false;
 
@@ -57,27 +78,6 @@
         }
         setTimeout(function(){ draw(v,c,bc,w,h); }, 0);
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var v = document.getElementById('v');
-        var canvas = document.getElementById('c');
-        var context = canvas.getContext('2d');
-        var back = document.createElement('canvas');
-        var backcontext = back.getContext('2d');
-
-        var cw,ch;
-        v.currentTime = 13;
-
-        v.addEventListener('play', function() {
-            cw = v.clientWidth;
-            ch = v.clientHeight;
-            canvas.width = cw;
-            canvas.height = ch;
-            back.width = cw;
-            back.height = ch;
-            draw(v,context,backcontext,cw,ch);
-        }, false);
-    });
 </script>
 
 <canvas id="c"></canvas>
