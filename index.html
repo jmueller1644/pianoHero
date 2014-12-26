@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<title>Video/Canvas Demo 1</title>
+<script>
+    // video key colors ~ (r,g,b): taken from middle of key in a screenshot of video
+    // left hand white key: (110, 160, 202)
+    // left hand black key: (50, 98, 155)
+    // right hand white key: (138, 227, 51)
+    // right hand black key: (83, 156, 15)
+    // keyboard is bottom 20% of video
+    var test = true;
+    var KEY_OFFSET = 10; // pixels from top of keys
+
+    function draw(v,c,bc,w,h) {
+        if(v.paused || v.ended) return false;
+
+        // don't check pixels during introduction and half-speed run
+        if (v.currentTime >= 13  && v.currentTime <= 106) {
+            // First, draw it into the backing canvas
+            bc.drawImage(v,0,0,w,h);
+            // Grab the pixel data from the backing canvas
+            var idata = bc.getImageData(0,Math.floor(h*0.8) + KEY_OFFSET, w, Math.floor(h*0.8) + KEY_OFFSET + 1);
+            var data = idata.data;
+
+            var expectedPixels = Math.floor(w * h);
+            var actualPixels = data.length;
+            if (test) {
+                console.log(expectedPixels);
+                console.log(actualPixels);
+                test = false;
+            }
+
+            // Loop through the pixels, turning them grayscale
+            for(var i = 0; i < data.length; i+=4) {
+                var r = data[i];
+                var g = data[i+1];
+                var b = data[i+2];
+
+                // attempt to turn currently played left hand white keys into red
+                if (Math.abs(r - 110) <= 20 && Math.abs(g - 160) <= 20 && Math.abs(b - 202) <= 20) {
+                    var x = (i / 4) % w;
+                    var y = Math.floor((i / 4.0) / w);
+                    console.log(x);
+
+                    data[i] = 255;
+                    data[i+1] = 0;
+                    data[i+2] = 0;
+                }
+                //var brightness = (3*r+4*g+b)>>>3;
+                //data[i] = brightness;
+                //data[i+1] = brightness;
+                //data[i+2] = brightness;
+            }
+            idata.data = data;
+            // Draw the pixels onto the visible canvas
+            c.putImageData(idata,0,0);
+            // Start over!
+        }
+        setTimeout(function(){ draw(v,c,bc,w,h); }, 0);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var v = document.getElementById('v');
+        var canvas = document.getElementById('c');
+        var context = canvas.getContext('2d');
+        var back = document.createElement('canvas');
+        var backcontext = back.getContext('2d');
+
+        var cw,ch;
+        v.currentTime = 13;
+
+        v.addEventListener('play', function() {
+            cw = v.clientWidth;
+            ch = v.clientHeight;
+            canvas.width = cw;
+            canvas.height = ch;
+            back.width = cw;
+            back.height = ch;
+            draw(v,context,backcontext,cw,ch);
+        }, false);
+    });
+</script>
+
+<canvas id="c"></canvas>
+<video id="v" controls loop>
+    <source src="assets/videos/avici.webm" type="video/webm">
+    <source src="assets/videos/avici.ogg" type="video/ogg">
+    <source src="assets/videos/avici.mp4" type="video/mp4">
+</video>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
