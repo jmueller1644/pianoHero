@@ -7,7 +7,6 @@
     // right hand white key: (138, 227, 51)
     // right hand black key: (83, 156, 15)
     // keyboard is bottom 20% of video
-    var test = true;
     var KEY_OFFSET = 10; // pixels from top of keys
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -41,14 +40,6 @@
             // Grab the pixel data from the backing canvas
             var idata = bc.getImageData(0, Math.floor(h * 0.8) + KEY_OFFSET, w, 1);
             var data = idata.data;
-
-            var expectedPixels = Math.floor(w * h);
-            var actualPixels = data.length;
-            if (test) {
-                console.log(expectedPixels);
-                console.log(actualPixels);
-                test = false;
-            }
 
             // Loop through the pixels, turning them grayscale
             for(var i = 0; i < data.length; i += 4) {
