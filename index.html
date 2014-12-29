@@ -8,6 +8,7 @@
     // right hand black key: (83, 156, 15)
     // keyboard is bottom 20% of video
     var KEY_OFFSET = 10; // pixels from top of keys
+    var colors = new Array();
 
     document.addEventListener('DOMContentLoaded', function() {
         var v = document.getElementById('v');
@@ -44,8 +45,8 @@
             // Loop through the pixels, turning them grayscale
             for(var i = 0; i < data.length; i += 4) {
                 var r = data[i];
-                var g = data[i+1];
-                var b = data[i+2];
+                var g = data[i + 1];
+                var b = data[i + 2];
 
                 // attempt to turn currently played left hand white keys into red
                 if (Math.abs(r - 110) <= 20 && Math.abs(g - 160) <= 20 && Math.abs(b - 202) <= 20) {
@@ -57,6 +58,15 @@
                     data[i + 1] = 0;
                     data[i + 2] = 0;
                 }
+
+                if (r + g + b <= 20) {
+                    colors.push('B');
+                } else if (r + g + b >= (255 * 3) - 20) {
+                    colors.push('W');
+                } else {
+                    colors.push('NA');
+                }
+
             }
             idata.data = data;
             // Draw the pixels onto the visible canvas
